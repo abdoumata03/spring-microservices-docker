@@ -1,0 +1,3 @@
+FROM openjdk:17-jdk-alpine
+COPY target/Gateway*.jar Gateway.jar
+ENTRYPOINT ["java","-jar","/Gateway.jar"]

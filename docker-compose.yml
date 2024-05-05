@@ -1,0 +1,45 @@
+services:
+  registry:
+    image: registry
+    ports:
+      - "8080:8888"
+
+  ms-gateway:
+    image: gateway
+    ports:
+      - "9090:7777"
+    depends_on:
+      - registry
+      - ms-formation
+      - ms-bourse
+      - ms-scolarite
+    environment:
+      profile: "default"
+      eureka.client.serviceUrl.defaultZone: "http://registry:8888/"
+
+  ms-formation:
+    build: ./ms-formation/
+    image: ms-formation
+    depends_on:
+      - registry
+    environment:
+      profile: "default"
+      eureka.client.serviceUrl.defaultZone: "http://registry:8888/"
+
+  ms-bourse:
+    build: ./ms-bourse/
+    image: ms-bourse
+    depends_on:
+      - registry
+    environment:
+      profile: "default"
+      eureka.client.serviceUrl.defaultZone: "http://registry:8888/"
+
+  ms-scolarite:
+    build: ./ms-scolarite/
+    image: ms-scolarite
+    depends_on:
+      - registry
+    environment:
+      profile: "default"
+      eureka.client.serviceUrl.defaultZone: "http://registry:8888/"
